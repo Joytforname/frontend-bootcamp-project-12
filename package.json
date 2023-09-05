@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npm run build --prefix hexletchat",
     "start": "start-server -p 4000 -s ./hexletchat/build",
+    "postinstall": "npm ci --prefix hexletchat",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
