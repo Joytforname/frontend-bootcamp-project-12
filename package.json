@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npm run build --prefix hexletchat",
     "start": "start-server -p 4000 -s ./hexletchat/build",
+    "postinstall": "npm ci --prefix hexletchat",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,6 +14,5 @@
   "dependencies": {
     "@fastify/static": "^6.10.2",
     "@hexlet/chat-server": "^1.1.6",
-    "fs": "^0.0.1-security"
   }
 }
