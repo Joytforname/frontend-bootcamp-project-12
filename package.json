@@ -4,8 +4,8 @@
   "description": "[![Actions Status](https://github.com/Joytforname/frontend-bootcamp-project-12/workflows/hexlet-check/badge.svg)](https://github.com/Joytforname/frontend-bootcamp-project-12/actions)",
   "main": "./hexletchat/src/index.js",
   "scripts": {
-    "postinstall": "npm ci --prefix hexletchat",
     "build": "npm run build --prefix hexletchat",
+    "postinstall": "npm ci --prefix hexletchat",
     "start": "start-server -p 4000 -s ./hexletchat/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
