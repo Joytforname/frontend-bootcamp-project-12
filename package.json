@@ -13,6 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/static": "^6.10.2",
-    "@hexlet/chat-server": "^1.1.6",
+    "@hexlet/chat-server": "^1.1.6"
   }
 }
