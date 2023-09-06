@@ -1,6 +1,5 @@
 {
   "name": "hexletchat",
-  "type": "module",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",
