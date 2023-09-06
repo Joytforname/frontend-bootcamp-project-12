@@ -5,7 +5,7 @@
   "main": "./hexletchat/src/index.js",
   "scripts": {
     "build": "npm run build --prefix hexletchat",
-    "start": "start-server -p 4000 -s ./hexletchat/build",
+    "start": "start-server -s ./hexletchat/build",
     "postinstall": "npm i --prefix hexletchat",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
