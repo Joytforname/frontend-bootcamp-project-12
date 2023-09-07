@@ -1,12 +1,12 @@
 Chat
 
-For build:
+Build:
 
 ```
 npm run build
 ```
 
-To start:
+Start:
 
 ```
 npm start
