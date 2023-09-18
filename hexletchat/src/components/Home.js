@@ -11,28 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as messagesActions } from '../slices/messagesSlice';
 import Chat from './Chat';
-import getModal from './modals/index';
-import Channels from './Channels';
+import Channels from './ChannelsContainer';
 import routes from '../routes';
 import NavBar from './Navbar';
 import useAuth from '../hooks/useAuth';
-
-const renderModal = (props) => {
-  const {
-    modalInfo, hideModal,
-  } = props;
-  if (!modalInfo.type) {
-    return null;
-  }
-
-  const Modal = getModal(modalInfo.type);
-  return (
-    <Modal
-      modalInfo={modalInfo}
-      onHide={hideModal}
-    />
-  );
-};
+import renderModal from './renderModal';
 
 const Home = () => {
   const { t } = useTranslation();
