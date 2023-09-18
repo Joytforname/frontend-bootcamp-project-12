@@ -12,7 +12,7 @@ import ApiContext from './contexts/ApiContext';
 import { actions as channelsActions } from './slices/channelsSlice';
 import { actions as messagesActions } from './slices/messagesSlice';
 
-const init = async () => {
+const appRoot = async () => {
   const socket = io();
   const wrapper = (event, data) => new Promise((resolve, reject) => {
     socket.timeout(5000).volatile.emit(event, data, (err, response) => {
@@ -67,7 +67,7 @@ const init = async () => {
   leoProfanity.add(leoProfanity.getDictionary('en'));
   leoProfanity.add(leoProfanity.getDictionary('ru'));
 
-  const vdom = (
+  return (
     <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
         <React.StrictMode>
@@ -82,7 +82,6 @@ const init = async () => {
       </ErrorBoundary>
     </RollbarProvider>
   );
-  return vdom;
 };
 
-export default init;
+export default appRoot;

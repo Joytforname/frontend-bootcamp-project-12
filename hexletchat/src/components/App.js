@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import {
-  BrowserRouter as Router, Routes, Route, useLocation, Navigate,
+  BrowserRouter as Router, Routes, Route,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Home from './Home';
@@ -9,19 +9,8 @@ import LoginPage from './LoginPage';
 import Registration from './Registration';
 import ErrorPage from './ErrorPage';
 import { AuthProvider } from '../contexts/AutorizationContext';
-import useAuth from '../hooks/useAuth';
 import routes from '../routes';
-
-const PrivateRoute = ({ children }) => {
-  const auth = useAuth();
-  const location = useLocation();
-  if (auth.user) {
-    return children;
-  }
-  return (
-    <Navigate to={routes.login} state={{ from: location }} />
-  );
-};
+import PrivateRoute from './PrivateRoute';
 
 const App = () => (
   <AuthProvider>
