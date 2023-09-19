@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
@@ -12,7 +12,7 @@ import ApiContext from './contexts/ApiContext';
 import { actions as channelsActions } from './slices/channelsSlice';
 import { actions as messagesActions } from './slices/messagesSlice';
 
-const appRoot = async () => {
+const AppRoot = () => {
   const socket = io();
   const wrapper = (event, data) => new Promise((resolve, reject) => {
     socket.timeout(5000).volatile.emit(event, data, (err, response) => {
@@ -26,38 +26,53 @@ const appRoot = async () => {
     });
   });
 
-  const chatApi = {
+  const chatApi = useMemo(() => ({
     addChannel: (data) => wrapper('newChannel', data),
     renameChannel: (data) => wrapper('renameChannel', data),
     removeChannel: (data) => wrapper('removeChannel', data),
     sendNewMessage: (data) => wrapper('newMessage', data),
-  };
+  }), []);
 
-  socket.on('newChannel', (channel) => {
-    store.dispatch(channelsActions.addChannel(channel));
-  });
+  const [i18nInstance, setI18nInstance] = useState(null);
 
-  socket.on('renameChannel', (channel) => {
-    const { id, name } = channel;
-    store.dispatch(channelsActions.updateChannel({ id, changes: { name } }));
-  });
+  useEffect(() => {
+    const instance = i18n.createInstance();
 
-  socket.on('removeChannel', (channel) => {
-    store.dispatch(channelsActions.removeChannel(channel.id));
-  });
+    instance
+      .use(initReactI18next)
+      .init({
+        resources,
+        lng: 'ru',
+        fallbackLng: 'ru',
+      });
+    setI18nInstance(instance);
+  }, []);
 
-  socket.on('newMessage', (message) => {
-    store.dispatch(messagesActions.addMessage(message));
-  });
-
-  const i18nInstance = i18n.createInstance();
-  await i18nInstance
-    .use(initReactI18next)
-    .init({
-      resources,
-      lng: 'ru',
-      fallbackLng: 'ru',
+  useEffect(() => {
+    socket.on('newChannel', (channel) => {
+      store.dispatch(channelsActions.addChannel(channel));
     });
+
+    socket.on('renameChannel', (channel) => {
+      const { id, name } = channel;
+      store.dispatch(channelsActions.updateChannel({ id, changes: { name } }));
+    });
+
+    socket.on('removeChannel', (channel) => {
+      store.dispatch(channelsActions.removeChannel(channel.id));
+    });
+
+    socket.on('newMessage', (message) => {
+      store.dispatch(messagesActions.addMessage(message));
+    });
+
+    return () => {
+      socket.off('newChannel');
+      socket.off('renameChannel');
+      socket.off('removeChannel');
+      socket.off('newMessage');
+    };
+  }, []);
 
   const rollbarConfig = {
     accessToken: 'e6bc1a40d8f349ecbe08c8a9e4564356',
@@ -67,7 +82,7 @@ const appRoot = async () => {
   leoProfanity.add(leoProfanity.getDictionary('en'));
   leoProfanity.add(leoProfanity.getDictionary('ru'));
 
-  return (
+  return i18nInstance ? (
     <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
         <React.StrictMode>
@@ -81,7 +96,7 @@ const appRoot = async () => {
         </React.StrictMode>
       </ErrorBoundary>
     </RollbarProvider>
-  );
+  ) : null;
 };
 
-export default appRoot;
+export default AppRoot;
